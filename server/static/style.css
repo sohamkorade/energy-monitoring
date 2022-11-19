@@ -1,0 +1,155 @@
+.rainyDay {
+	position: relative;
+	width: 100%;
+	height: 400px;
+	overflow: hidden;
+	background-color: #33415c;
+}
+
+.umbrella {
+	position: relative;
+	top: 200px;
+	left: 45%;
+}
+
+.panel {
+	position: absolute;
+	background-color: #333;
+	width: 5px;
+	height: 120px;
+	top: -50px;
+	z-index: 3;
+}
+
+.shade {
+	content: "";
+	position: absolute;
+	top: -25px;
+	left: -97px;
+	width: 200px;
+	height: 350px;
+	background-color: #47546c;
+	transition: .2s ease;
+	z-index: 1;
+}
+
+.panel:after {
+	content: "";
+	position: absolute;
+	cursor: pointer;
+	width: 200px;
+	height: 100px;
+	border-radius: 100px 100px 0 0;
+	background-color: #a4161a;
+	box-shadow: inset 0 -10px #333, inset 50px -10px #ba181b, inset -50px -10px #ba181b;
+	top: -75px;
+	left: -97px;
+	transition: .2s ease;
+	transform-origin: top;
+}
+
+input#panel {
+	display: none;
+}
+
+#panel:checked~.panel:after {
+	transform: scaleX(0.2) scaleY(1.5);
+}
+
+#panel:checked+.shade {
+	transform: scaleX(0.000001);
+	opacity: 0;
+	z-index: 0;
+}
+
+.stick {
+	position: absolute;
+	background-color: #333;
+	width: 5px;
+	height: 20px;
+	border-radius: 20px 20px 0 0;
+	top: -143px;
+	left: 0.5;
+	z-index: 5;
+}
+
+.stick:before {
+	content: "";
+	position: absolute;
+	border-right: 7px solid #b1a7a6;
+	border-bottom: 7px solid #b1a7a6;
+	border-left: 7px solid transparent;
+	border-top: 7px solid transparent;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	top: 198px;
+	left: -1px;
+	transform: rotate(45deg);
+}
+
+.stick:after {
+	content: "";
+	position: absolute;
+	width: 7px;
+	height: 15px;
+	background-color: #b1a7a6;
+	top: 195px;
+	left: -1px;
+}
+
+.rain {
+	position: absolute;
+}
+
+#dropletOne,
+#dropletTwo,
+#dropletThree,
+#dropletFour,
+#dropletFive {
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	border-radius: 80% 0 55% 50% / 55% 0 80% 50%;
+	background-color: #8CDFE8;
+	top: -20px;
+	left: 150px;
+	transform: rotate(-45deg);
+	box-shadow: -80px -100px #8CDFE8, 80px 150px #8CDFE8;
+	animation: rain 4s linear infinite;
+	z-index: 0;
+}
+
+#dropletTwo {
+	top: -30px;
+	left: 200px;
+	animation: rain 4s linear infinite 1s;
+}
+
+#dropletThree {
+	top: -70px;
+	left: 100px;
+	animation: rain 4s linear infinite 2s;
+}
+
+#dropletFour {
+	top: -70px;
+	left: 50px;
+	animation: rain 4s linear infinite 2.5s;
+}
+
+#dropletFive {
+	top: -90px;
+	left: 250px;
+	animation: rain 4s linear infinite 3s;
+}
+
+@keyframes rain {
+	0% {
+		transform: translateY(-20px) rotate(-45deg);
+	}
+
+	100% {
+		transform: translateY(450px) rotate(-45deg);
+	}
+}
