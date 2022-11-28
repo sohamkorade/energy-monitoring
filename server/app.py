@@ -87,4 +87,6 @@ def oldpage():
 
 if __name__ == "__main__":
     # app.run(debug=True, port=8000)
-    app.run(host="0.0.0.0")
+    # app.run(host="0.0.0.0")
+    from waitress import serve
+    serve(app)

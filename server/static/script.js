@@ -77,7 +77,8 @@ function renew() {
 			chart_data.labels = e.chart[sensor][1]
 			Chart.getChart(sensor).update()
 			document.getElementById(`${sensor}-data`).innerText = e.data[sensor]
-			WM_set(sensor, e.data[sensor] == "On", e.data[sensor])
+			WM_set(sensor, e.data[sensor] == "Soak" || e.data[sensor] == "Wash" ||
+				e.data[sensor] == "Spin", e.data[sensor])
 		}
 		// document.getElementById(`Status-data`).innerText = e.data["_status_str"]
 		// if (manual == 0) {
@@ -154,7 +155,7 @@ function WM_set_washing(sensor, status) {
 }
 
 function WM_set_text(sensor, text) {
-	document.getElementById(`controls${sensor}`).innerText = text
+	document.getElementById(`controls${sensor}`).innerText = text.toUpperCase()
 }
 
 function WM_set(sensor, setting, text) {

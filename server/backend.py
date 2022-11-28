@@ -2,7 +2,7 @@ import requests
 import json
 
 username_password = "awqety:qaerft"
-url = "http://esw-onem2m.iiit.ac.in:443/" + "~/in-cse/in-name/"
+url = "https://esw-onem2m.iiit.ac.in:443/" + "~/in-cse/in-name/"
 
 nodes = {
     "Machine-1": "Team-15/Node-1/Data",
@@ -20,27 +20,32 @@ def get_sensor_data_thingspeak(saved):
     data = {**{node: "" for node in nodes}, "_error": ""}
     chart = {node: [[], []] for node in nodes}
     for node in nodes:
-        if saved == False:
-            get = requests.get(
-                f"https://api.thingspeak.com/channels/1944689/fields/{node[-1]}.json?results=10&timezone=Asia%2FKolkata",
-                timeout=3)
-            get_json = get.json()
-            # print(get_json)
-            with open(f"data/{node}.json", "w") as f:
-                json.dump(get_json, f)
-        else:
-            with open(f"data/{node}.json", "r") as f:
-                get_json = json.load(f)
+        # if saved == False:
+        get = requests.get(
+            f"https://api.thingspeak.com/channels/1944689/fields/{node[-1]}.json?results=10&timezone=Asia%2FKolkata",
+            timeout=3)
+        get_json = get.json()
+        # print(get_json)
+        #     with open(f"data/{node}.json", "w") as f:
+        #         json.dump(get_json, f)
+        # else:
+        #     with open(f"data/{node}.json", "r") as f:
+        #         get_json = json.load(f)
         for item in get_json["feeds"][-10:]:
             chart[node][0].append(item[f"field{node[-1]}"])
             # "2022-11-19T13:32:43Z"
             chart[node][1].append(item["created_at"][11:16])
         data[node] = get_json["feeds"][-1][f"field{node[-1]}"]
         if data[node]:
-            if float(data[node]) > 0.6:
-                data[node] = "On"
+            x = float(data[node])
+            if 0.2 < x < 0.5:
+                data[node] = "Soak"
+            elif 0.5 < x < 0.9:
+                data[node] = "Wash"
+            elif 0.9 < x:
+                data[node] = "Spin"
             else:
-                data[node] = "Off"
+                data[node] = "Ready"
     return data, chart
 
 
