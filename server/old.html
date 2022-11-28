@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Washing Machine Dashboard</title>
+	<link href="/static/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="container">
+		<nav class="navbar navbar-light">
+			<a class="navbar-brand" href="">
+				<h1>Washing Machine Dashboard</h1>
+			</a>
+		</nav>
+		<div class="row">
+			<div class="row row-cols-2">
+				<label>ON value</label><input type="text" id="onvalue" value="1">
+				<label>OFF value</label><input type="text" id="offvalue" value="0">
+			</div>
+			<div class="row row-cols-5">
+				<label>Machine 1</label><button onclick="ON(1)">On</button><button onclick="OFF(1)">Off</button><input
+					type="text" id="m1" value="1.6"><button onclick="SEND(1)">Send</button>
+				<label>Machine 2</label><button onclick="ON(2)">On</button><button onclick="OFF(2)">Off</button><input
+					type="text" id="m2" value="1.6"><button onclick="SEND(2)">Send</button>
+				<label>Machine 3</label><button onclick="ON(3)">On</button><button onclick="OFF(3)">Off</button><input
+					type="text" id="m3" value="1.6"><button onclick="SEND(3)">Send</button>
+				<label>Machine 4</label><button onclick="ON(4)">On</button><button onclick="OFF(4)">Off</button><input
+					type="text" id="m4" value="1.6"><button onclick="SEND(4)">Send</button>
+			</div>
+		</div>
+		<div id="Error-box" class="alert alert-warning d-flex align-items-center d-none" role="alert">
+			<span id="Error-data" style="overflow-wrap: anywhere;"></pre>
+		</div>
+	</div>
+</body>
+
+<script>
+	function api(url) {
+		fetch(url).then(e => e.json()).then(data => {
+			console.log(data);
+			document.getElementById("Error-box").classList.remove("d-none");
+			document.getElementById("Error-data").innerHTML = JSON.stringify(data);
+		});
+	}
+	function ON(id) {
+		api(`https://api.thingspeak.com/update.json?api_key=GBERL1DWG3UUO2F1&field${id}=${document.getElementById(`onvalue`).value}`)
+	}
+	function OFF(id) {
+		api(`https://api.thingspeak.com/update.json?api_key=GBERL1DWG3UUO2F1&field${id}=${document.getElementById(`offvalue`).value}`)
+	}
+	function SEND(id) {
+		api(`https://api.thingspeak.com/update.json?api_key=GBERL1DWG3UUO2F1&field${id}=${document.getElementById(`m${id}`).value}`)
+	}
+
+</script>
+
+</html>

@@ -2,13 +2,13 @@ import requests
 import json
 
 username_password = "awqety:qaerft"
-url = "https://esw-onem2m.iiit.ac.in:443/" + "~/in-cse/in-name/"
+url = "http://esw-onem2m.iiit.ac.in:443/" + "~/in-cse/in-name/"
 
 nodes = {
-    "Node1": "Team-15/Node-1/Data",
-    "Node2": "Team-15/Node-2/Data",
-    "Node3": "Team-15/Node-3/Data",
-    "Node4": "Team-15/Node-4/Data"
+    "Machine-1": "Team-15/Node-1/Data",
+    "Machine-2": "Team-15/Node-2/Data",
+    "Machine-3": "Team-15/Node-3/Data",
+    "Machine-4": "Team-15/Node-4/Data"
 }
 
 
@@ -22,9 +22,10 @@ def get_sensor_data_thingspeak(saved):
     for node in nodes:
         if saved == False:
             get = requests.get(
-                f"https://api.thingspeak.com/channels/1944689/fields/{node[-1]}.json"
-            )
+                f"https://api.thingspeak.com/channels/1944689/fields/{node[-1]}.json?results=10&timezone=Asia%2FKolkata",
+                timeout=3)
             get_json = get.json()
+            # print(get_json)
             with open(f"data/{node}.json", "w") as f:
                 json.dump(get_json, f)
         else:
@@ -35,6 +36,11 @@ def get_sensor_data_thingspeak(saved):
             # "2022-11-19T13:32:43Z"
             chart[node][1].append(item["created_at"][11:16])
         data[node] = get_json["feeds"][-1][f"field{node[-1]}"]
+        if data[node]:
+            if float(data[node]) > 0.6:
+                data[node] = "On"
+            else:
+                data[node] = "Off"
     return data, chart
 
 
